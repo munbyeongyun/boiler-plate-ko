@@ -1,19 +1,36 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { loginUser } from "../../../_actions/user_action";
 
-function LoginPage() {
+function LoginPage(props) {
+  const dispatch = useDispatch();
+
   const [Email, setEmail] = useState("");
   const [Password, setPassword] = useState("");
 
   const onEmailHandler = (event) => {
-    setEmail(event.currentTarget.value);
+    setEmail(event.target.value);
   };
 
   const onPasswordHandler = (event) => {
-    setPassword(event.currentTarget.value);
+    setPassword(event.target.value);
   };
 
   const onSubmitHandler = (event) => {
-    event.preventDefult();
+    event.preventDefault();
+
+    let body = {
+      email: Email,
+      password: Password,
+    };
+
+    dispatch(loginUser(body)).then((response) => {
+      if (response.payload.loginSuccess) {
+        props.history.push("/");
+      } else {
+        alert("Error");
+      }
+    });
   };
 
   return (
@@ -26,8 +43,8 @@ function LoginPage() {
         height: "100vh",
       }}
     >
-      <from
-        style={{ display: "flex", flexDirction: "column" }}
+      <form
+        style={{ display: "flex", flexDirection: "column" }}
         onSubmit={onSubmitHandler}
       >
         <label>Email</label>
@@ -36,7 +53,7 @@ function LoginPage() {
         <input type="password" value={Password} onChange={onPasswordHandler} />
         <br />
         <button>Login</button>
-      </from>
+      </form>
     </div>
   );
 }
