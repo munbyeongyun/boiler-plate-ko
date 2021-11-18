@@ -8,6 +8,6 @@ export function loginUser(dataToSubmit) {
 
   return {
     type: LOGIN_USER,
-    paylode: request,
+    payload: request,
   };
 }
